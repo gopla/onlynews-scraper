@@ -1,0 +1,22 @@
+{
+	"name": "scraping",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "node ./src/news/news.controller.js",
+		"start": "node ./src/index.js",
+		"dev": "nodemon ./src/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^8.2.0",
+		"mongoose": "^5.11.8",
+		"puppeteer": "^5.5.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.6"
+	}
+}

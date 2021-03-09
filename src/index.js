@@ -1,17 +1,11 @@
 const { connectDB } = require('./utils/db')
-const { getNewsIntoDB, newsScrap } = require('./news/tribun.controller')
+const { scrapTribun } = require('./scraper/tribun.scraper')
+const { scrapOkezone } = require('./scraper/okzeone.scraper')
 
 connectDB()
-	.then(() => {
+	.then(async () => {
 		console.log(` -> Database connected!`)
-		getNewsIntoDB('news').then(() =>
-			newsScrap().then(() => {
-				getNewsIntoDB('seleb').then(() =>
-					newsScrap().then(() => {
-						getNewsIntoDB('techno').then(() => newsScrap())
-					}),
-				)
-			}),
-		)
+    await scrapTribun(['news','techno','seleb'])
+    await scrapOkezone(['travel','news','celebrity'])
 	})
 	.catch((err) => console.log(err))

@@ -1,9 +1,9 @@
 {
-  "name": "onlynews-scraping",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
+	"name": "onlynews-scraping",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
 		"test": "node ./src/news/news.controller.js",
 		"start": "node ./src/index.js",
 		"dev": "nodemon ./src/index.js"
@@ -14,13 +14,14 @@
 	"dependencies": {
 		"dotenv": "^8.2.0",
 		"mongoose": "^5.11.8",
+		"node-cron": "^3.0.0",
 		"puppeteer": "^5.5.0"
 	},
 	"devDependencies": {
 		"nodemon": "^2.0.6"
 	},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gopla/onlynews-scraper.git"
-  }
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/gopla/onlynews-scraper.git"
+	}
 }

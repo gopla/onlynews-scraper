@@ -3,7 +3,7 @@ const News = require('../models/news.model')
 
 async function scrapTribun(topic) {
 	// let topic = `news`
-	const browser = await puppeteer.launch({ headless: false })
+	const browser = await puppeteer.launch({ headless: true })
 	topic.forEach(async (topic) => {
 		const page = await browser.newPage()
 
@@ -28,7 +28,7 @@ async function scrapTribun(topic) {
 		}, topic)
 
 		try {
-			data.length = 10
+			data.length = 5
 			for (const isiData of data) {
 				console.log(isiData.link + '?page=all')
 				await page.goto(isiData.link + '?page=all', {
@@ -39,7 +39,9 @@ async function scrapTribun(topic) {
 					const imgEle = document.querySelector('.imgfull')
 
 					const date = document.querySelector('time').innerText
-					const image = imgEle ? imgEle.currentSrc : ' '
+					const image = imgEle
+						? imgEle.currentSrc
+						: 'https://cdn.iconscout.com/icon/free/png-256/news-1661516-1410317.png'
 
 					let arrNews = Array.from(
 						document.querySelectorAll('p'),

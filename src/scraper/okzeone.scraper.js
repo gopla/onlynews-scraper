@@ -3,7 +3,7 @@ const News = require('../models/news.model')
 
 async function scrapOkezone(topic) {
 	// let topic = `news`
-	const browser = await puppeteer.launch({ headless: false })
+	const browser = await puppeteer.launch({ headless: true })
 	topic.forEach(async (topic) => {
 		const page = await browser.newPage()
 
@@ -29,7 +29,7 @@ async function scrapOkezone(topic) {
 		}, topic)
 
 		try {
-			data.length = 10
+			data.length = 5
 			for (const isiData of data) {
 				console.log(isiData.link)
 				await page.goto(isiData.link + '?page=all', {
@@ -40,7 +40,9 @@ async function scrapOkezone(topic) {
 					const imgEle = document.querySelector('#imgCheck')
 
 					const date = document.querySelector('.namerep b').innerText
-					const image = imgEle ? imgEle.src : ' '
+					const image = imgEle
+						? imgEle.src
+						: 'https://cdn.iconscout.com/icon/free/png-256/news-1661516-1410317.png'
 
 					let arrNews = Array.from(
 						document.querySelectorAll('p'),

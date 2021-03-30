@@ -7,10 +7,10 @@ const cron = require('node-cron')
 connectDB()
 	.then(async () => {
 		console.log(` -> Database connected!`)
-		cron.schedule('*/30 * * * *', async () => {
-			await scrapTribun(['news', 'techno', 'seleb'])
-			await scrapOkezone(['travel', 'news', 'celebrity'])
-			await scrapDetik(['travel', 'health', 'sport'])
-		})
+		// cron.schedule('*/30 * * * *', async () => {
+		await scrapDetik(['sport'])
+		// await scrapTribun(['news', 'techno', 'seleb'])
+		// await scrapOkezone(['travel', 'news', 'celebrity'])
+		// })
 	})
 	.catch((err) => console.log(err))

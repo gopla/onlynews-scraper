@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer')
 const News = require('../models/news.model')
 
 async function scrapDetik(topic) {
-	const browser = await puppeteer.launch({ headless: false })
+	const browser = await puppeteer.launch({ headless: true })
 	topic.forEach(async (topic) => {
 		const page = await browser.newPage()
 
@@ -51,7 +51,8 @@ async function scrapDetik(topic) {
 		}, topic)
 
 		try {
-			data.length = 10
+			data.length = 5
+			console.log(data)
 			for (const isiData of data) {
 				console.log(isiData.link)
 				await page.goto(isiData.link + '?page=all', {
@@ -65,13 +66,19 @@ async function scrapDetik(topic) {
 							'.img_con.lqd.imgLiquid_bgSize.imgLiquid_ready img',
 						)
 					} else if (isiData.topic == 'health') {
-						imgEle = document.querySelector('.media_artikel.wide')
+						imgEle = document.querySelector('.media_artikel.wide img')
 					} else {
-						imgEle = document.querySelector('.p_img_zoomin.img-zoomin')
+						imgEle = document.querySelector('.pic_artikel')
+							? document.querySelector('.pic_artikel img')
+							: document.querySelector('.p_img_zoomin.img-zoomin')
 					}
 
-					const date = document.querySelector('.date').innerText
-					const image = imgEle ? imgEle.src : ' '
+					const date = document.querySelector('.date')
+						? document.querySelector('.date').innerText
+						: document.querySelector('.detail__date').innerText
+					const image = imgEle
+						? imgEle.src
+						: 'https://cdn.iconscout.com/icon/free/png-256/news-1661516-1410317.png'
 
 					let arrNews = Array.from(
 						document.querySelectorAll('p'),

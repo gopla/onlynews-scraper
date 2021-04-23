@@ -52,9 +52,7 @@ async function scrapDetik(topic) {
 
 		try {
 			data.length = 5
-			console.log(data)
 			for (const isiData of data) {
-				console.log(isiData.link)
 				await page.goto(isiData.link + '?page=all', {
 					waitUntil: 'networkidle0',
 					timeout: 0,
@@ -97,7 +95,6 @@ async function scrapDetik(topic) {
 				}, isiData)
 				try {
 					await News.create(data)
-					// console.log(data)
 					console.log(data.title + ' telah dimasukkan')
 				} catch (error) {
 					console.log('Berita sudah ada')
@@ -109,7 +106,7 @@ async function scrapDetik(topic) {
 	})
 	setTimeout(async () => {
 		await browser.close()
-	}, 300000)
+	}, 600000)
 }
 
 module.exports = {

@@ -30,7 +30,6 @@ async function scrapTribun(topic) {
 		try {
 			data.length = 5
 			for (const isiData of data) {
-				console.log(isiData.link + '?page=all')
 				await page.goto(isiData.link + '?page=all', {
 					waitUntil: 'networkidle0',
 					timeout: 0,
@@ -71,7 +70,7 @@ async function scrapTribun(topic) {
 	})
 	setTimeout(async () => {
 		await browser.close()
-	}, 300000)
+	}, 600000)
 }
 
 module.exports = {

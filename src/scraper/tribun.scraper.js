@@ -42,11 +42,20 @@ async function scrapTribun(topic) {
 						? imgEle.currentSrc
 						: 'https://cdn.iconscout.com/icon/free/png-256/news-1661516-1410317.png'
 
-					let arrNews = Array.from(
-						document.querySelectorAll('p'),
-						(el) => el.innerText,
+					let str = Array.from(
+						document.querySelectorAll('.side-article.txt-article p'),
+						(a) => {
+							if (a.outerHTML.includes('<a href')) {
+								return '<p>' + a.innerText + '</p>'
+							} else if (!a.outerHTML.includes('Baca juga:')) {
+								return a.outerHTML
+							} else {
+								return '<br />'
+							}
+						},
 					)
-					const news = arrNews.join(' ')
+					str = str.join('')
+					const news = str
 					return {
 						link: isiData.link,
 						title: isiData.title,
@@ -70,7 +79,7 @@ async function scrapTribun(topic) {
 	})
 	setTimeout(async () => {
 		await browser.close()
-	}, 600000)
+	}, 300000)
 }
 
 module.exports = {

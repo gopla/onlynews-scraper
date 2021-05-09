@@ -53,22 +53,75 @@ async function scrapDetik(topic) {
 		try {
 			data.length = 5
 			for (const isiData of data) {
-				await page.goto(isiData.link + '?page=all', {
-					waitUntil: 'networkidle0',
-					timeout: 0,
-				})
+				if (isiData.topic == 'health') {
+					await page.goto(isiData.link + '?single', {
+						waitUntil: 'networkidle0',
+						timeout: 0,
+					})
+				} else {
+					await page.goto(isiData.link + '?page=all', {
+						waitUntil: 'networkidle0',
+						timeout: 0,
+					})
+				}
+
 				let data = await page.evaluate(async (isiData) => {
 					let imgEle = ''
+
+					let news = ''
 					if (isiData.topic == 'travel') {
 						imgEle = document.querySelector(
 							'.img_con.lqd.imgLiquid_bgSize.imgLiquid_ready img',
 						)
+						let str = Array.from(
+							document.querySelectorAll('#detikdetailtext p'),
+							(a) => {
+								if (a.outerHTML.includes('<a href')) {
+									return '<p>' + a.innerText + '</p>'
+								} else if (!a.outerHTML.includes('Baca juga:')) {
+									return a.outerHTML
+								} else {
+									return '<br />'
+								}
+							},
+						)
+						str = str.join('')
+						news = str
 					} else if (isiData.topic == 'health') {
 						imgEle = document.querySelector('.media_artikel.wide img')
+						let str = Array.from(
+							document.querySelectorAll('#detikdetailtext p'),
+							(a) => {
+								if (a.outerHTML.includes('<a href')) {
+									return '<p>' + a.innerText + '</p>'
+								} else if (!a.outerHTML.includes('Baca juga:')) {
+									return a.outerHTML
+								} else {
+									return '<br />'
+								}
+							},
+						)
+						str = str.join('')
+						news = str
 					} else {
 						imgEle = document.querySelector('.pic_artikel')
 							? document.querySelector('.pic_artikel img')
 							: document.querySelector('.p_img_zoomin.img-zoomin')
+
+						let str = Array.from(
+							document.querySelectorAll('.detail__body-text.itp_bodycontent p'),
+							(a) => {
+								if (a.outerHTML.includes('<a href')) {
+									return '<p>' + a.innerText + '</p>'
+								} else if (!a.outerHTML.includes('Baca juga:')) {
+									return a.outerHTML
+								} else {
+									return '<br />'
+								}
+							},
+						)
+						str = str.join('')
+						news = str
 					}
 
 					const date = document.querySelector('.date')
@@ -78,11 +131,6 @@ async function scrapDetik(topic) {
 						? imgEle.src
 						: 'https://cdn.iconscout.com/icon/free/png-256/news-1661516-1410317.png'
 
-					let arrNews = Array.from(
-						document.querySelectorAll('p'),
-						(el) => el.innerText,
-					)
-					const news = arrNews.join(' ')
 					return {
 						link: isiData.link,
 						title: isiData.title,
@@ -106,7 +154,7 @@ async function scrapDetik(topic) {
 	})
 	setTimeout(async () => {
 		await browser.close()
-	}, 600000)
+	}, 300000)
 }
 
 module.exports = {

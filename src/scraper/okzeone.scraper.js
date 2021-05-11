@@ -18,7 +18,7 @@ async function scrapOkezone(topic) {
 			return Array.from(
 				document.querySelectorAll('.wp-thumb-news a'),
 				(data) => ({
-					link: data.href.replace('page=1', 'page=all'),
+					link: data.href,
 					title: data.title,
 					image: document.querySelector('.thumb-news.img-responsive.lazy')
 						.dataset.original,
@@ -37,80 +37,35 @@ async function scrapOkezone(topic) {
 					timeout: 0,
 				})
 				let data = await page.evaluate(async (isiData) => {
-					let imgEle, date, image, news
-					let pageNum = parseInt(
-						document.querySelector('.second-paging')
-							? document.querySelector('.second-paging').innerText
-							: 0,
-					)
-					if (pageNum > 0) {
-						try {
-							imgEle = document.querySelector('#imgCheck')
+					try {
+						imgEle = document.querySelector('#imgCheck')
 
-							date = document.querySelector('.namerep b').innerText
-							image = imgEle
-								? imgEle.src
-								: 'https://cdn.iconscout.com/icon/free/png-256/news-1661516-1410317.png'
+						date = document.querySelector('.namerep b').innerText
+						image = imgEle
+							? imgEle.src
+							: 'https://cdn.iconscout.com/icon/free/png-256/news-1661516-1410317.png'
 
-							let str = []
-							for (let i = 0; i < pageNum; i++) {
-								const element = array[i]
-
-								console.log(isiData.link + `?page=${element}`)
-								await page.goto(isiData.link + `?page=${element}`, {
-									waitUntil: 'networkidle0',
-									timeout: 0,
-								})
-								Array.from(document.querySelectorAll('#contentx p'), (a) => {
-									if (
-										a.innerText.includes('Baca Juga :') ||
-										a.innerText.includes('Lihat juga:')
-									) {
-										str.push('<br />')
-									} else if (a.outerHTML.includes('<a href')) {
-										str.push('<p>' + a.innerText + '</p>')
-									} else {
-										str.push(a.outerHTML)
-									}
-								})
-							}
-							str = str.join('')
-							news = str
-						} catch (error) {
-							console.log('error Link : ' + isiData.link)
-							console.log(error)
-						}
-					} else {
-						try {
-							imgEle = document.querySelector('#imgCheck')
-
-							date = document.querySelector('.namerep b').innerText
-							image = imgEle
-								? imgEle.src
-								: 'https://cdn.iconscout.com/icon/free/png-256/news-1661516-1410317.png'
-
-							let str = Array.from(
-								document.querySelectorAll('#contentx p'),
-								(a) => {
-									if (
-										a.innerText.includes('Baca Juga') ||
-										a.innerText.includes('Baca juga') ||
-										a.innerText.includes('Lihat juga:')
-									) {
-										return '<br />'
-									} else if (a.outerHTML.includes('<a href')) {
-										return '<p>' + a.innerText + '</p>'
-									} else {
-										return a.outerHTML
-									}
-								},
-							)
-							str = str.join('')
-							news = str
-						} catch (error) {
-							console.log('error Link : ' + isiData.link)
-							console.log(error)
-						}
+						let str = Array.from(
+							document.querySelectorAll('#contentx p'),
+							(a) => {
+								if (
+									a.innerText.includes('Baca Juga') ||
+									a.innerText.includes('Baca juga') ||
+									a.innerText.includes('Lihat juga:')
+								) {
+									return '<br />'
+								} else if (a.outerHTML.includes('<a href')) {
+									return '<p>' + a.innerText + '</p>'
+								} else {
+									return a.outerHTML
+								}
+							},
+						)
+						str = str.join('')
+						news = str
+					} catch (error) {
+						console.log('error Link : ' + isiData.link)
+						console.log(error)
 					}
 					return {
 						link: isiData.link,

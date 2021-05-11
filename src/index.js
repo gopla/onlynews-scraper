@@ -9,9 +9,9 @@ connectDB()
 	.then(async () => {
 		console.log(` -> Database connected!`)
 		// cron.schedule('0 12 * * *', async () => {
-		// await scrapDetik(['sport', 'health', 'travel'])
-		// await scrapTribun(['news', 'techno', 'seleb'])
-		// await scrapOkezone(['travel', 'news', 'celebrity'])
+		await scrapDetik(['sport', 'health', 'travel'])
+		await scrapTribun(['news', 'techno', 'seleb'])
+		await scrapOkezone(['travel', 'news', 'celebrity'])
 		await scrapMerdeka(['sehat', 'teknologi', 'travel'])
 		// })
 	})
